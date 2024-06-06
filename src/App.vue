@@ -1,47 +1,64 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div id="app">
+    <div class="container">
+      <div class="left-side">
+        <PdfUploader @file-loaded="handleFileLoaded" />
+      </div>
+      <div class="right-side">
+        <PdfViewer v-if="pdfData" :pdfData="pdfData" />
+      </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script>
+import PdfUploader from "./components/PdfUploader.vue";
+import PdfViewer from "./components/PdfViewer.vue";
+
+export default {
+  components: {
+    PdfUploader,
+    PdfViewer
+  },
+  data() {
+    return {
+      pdfData: null
+    };
+  },
+  methods: {
+    handleFileLoaded(data) {
+      this.pdfData = data;
+    }
+  }
+};
+</script>
+
+<style>
+#app {
+  text-align: center;
+  margin-top: 50px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.container {
+  display: flex;
+  height: 100vh;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.left-side, .right-side {
+  flex: 1;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.left-side {
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.right-side {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
