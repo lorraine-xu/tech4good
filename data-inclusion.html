@@ -1,26 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
-=======
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Green Light-Year Services</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="assets/js/script.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
     <header>
@@ -29,7 +14,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#home">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li class="report-menu"><a href="#report">Report Form</a>
                     <div class="dropdown-content">
                         <a href="food.html">Food</a>
@@ -51,20 +36,7 @@
 
     <main>
         <section id="home">
-            <h1>Welcome to Green Light-Year Services</h1>
-            <div id="app">
-                <el-carousel :interval="4000" type="card" height="400px">
-                    <el-carousel-item v-for="(item, index) in items" :key="index">
-                        <template v-if="item">
-                            <img :src="item.src" :alt="item.alt" :width="item.width" class="carousel-image">
-                        </template>
-                        <template v-else>
-                            <h3 class="medium">{{ index + 1 }}</h3>
-                        </template>
-                    </el-carousel-item>
-                </el-carousel>
-            </div>
-            <p>Explore our site to learn more about our initiatives.</p>
+            <h1>Data-Inclusion Page</h1>
         </section>
     </main>
 
@@ -72,5 +44,4 @@
         <p>© 2024 Green Light-Year Organization</p>
     </footer>
 </body>
->>>>>>> new-branch
 </html>
