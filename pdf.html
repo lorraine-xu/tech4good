@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Light-Year Services</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="Green Light-Year Logo" height="50">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="report-menu"><a href="#report">Report Form</a>
+                    <div class="dropdown-content">
+                        <a href="food.html">Food</a>
+                        <a href="data-inclusion.html">Data Inclusion</a>
+                        <a href="finance.html">Finance</a>
+                        <a href="pdf.html">PDF Reader</a>
+                    </div>
+                </li>
+                <li><a href="about.html">About Us</a></li>
+                <li class="report-menu"><a href="#language">Language</a>
+                    <div class="dropdown-content">
+                        <a href="#english">English</a>
+                        <a href="#chinese">Chinese</a>
+                    </div>
+                </li>
+                <li><a href="#search">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h1>PDF Reader</h1>
+            <div id="vue-app"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Green Light-Year Organization</p>
+    </footer>
+
+    <script>
+        Vue.component('PdfUploader', {
+            template: '<div><input type="file" @change="uploadFile" /></div>',
+            methods: {
+                uploadFile(event) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        this.$emit('file-loaded', reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        Vue.component('PdfViewer', {
+            props: ['pdfData'],
+            template: '<div class="pdf-container"><iframe :src="pdfData" frameborder="0"></iframe></div>'
+        });
+
+        new Vue({
+            el: '#vue-app',
+            template: `
+                <div id="app">
+                    <div class="container">
+                        <div class="left-side">
+                            <PdfUploader @file-loaded="handleFileLoaded" />
+                        </div>
+                        <div class="right-side">
+                            <PdfViewer v-if="pdfData" :pdfData="pdfData" />
+                        </div>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    pdfData: null
+                };
+            },
+            methods: {
+                handleFileLoaded(data) {
+                    this.pdfData = data;
+                }
+            }
+        });
+    </script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #app {
+            text-align: center;
+            height: calc(100vh - 50px);
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        .left-side, .right-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .left-side {
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        .right-side {
+            background-color: #ffffff;
+            padding: 0;
+            height: 100%;
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pdf-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</body>
+</html>
