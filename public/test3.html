@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>华为与百度CSI各指标得分对比</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="myChart" style="width: 800px;height:600px;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('myChart'));
+
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                const baiduData = data.find(item => item.Company === 'Baidu');
+                const huaweiData = data.find(item => item.Company === 'Huawei');
+
+                const labels = ["CSI 1", "CSI 2", "CSI 3", "CSI 4", "CSI 5", "CSI 6", "CSI 7", "CSI 8", "CSI 9", "CSI 10", "CSI 11", "CSI 12", "CSI 13", "CSI 14", "CSI 15", "CSI 16", "CSI 17", "CSI 18"];
+                const baiduScores = labels.map(label => parseFloat(baiduData[label].toFixed(2)));
+                const huaweiScores = labels.map(label => parseFloat(huaweiData[label].toFixed(2)));
+                
+                // Compute the average scores
+                const otherData = data.filter(item => item.Company !== 'Baidu' && item.Company !== 'Huawei');
+                const averages = labels.map(label => {
+                    const sum = otherData.reduce((total, item) => total + item[label], 0);
+                    return parseFloat((sum / otherData.length).toFixed(2));
+                });
+
+                var option = {
+                    title: {
+                        text: '华为与百度CSI各指标得分对比',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['Baidu', 'Huawei', '中国该类指标平均分'],
+                        top: 'bottom'
+                    },
+                    grid: {
+                        left: '10%',
+                        right: '10%',
+                        bottom: '20%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: labels,
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 45
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        min: 0,
+                        max: 2
+                    },
+                    series: [
+                        {
+                            name: 'Baidu',
+                            type: 'bar',
+                            data: baiduScores,
+                            itemStyle: {
+                                color: 'rgba(75, 192, 192, 1)'
+                            }
+                        },
+                        {
+                            name: 'Huawei',
+                            type: 'bar',
+                            data: huaweiScores,
+                            itemStyle: {
+                                color: 'rgba(153, 102, 255, 1)'
+                            }
+                        },
+                        {
+                            name: '中国该类指标平均分',
+                            type: 'line',
+                            data: averages,
+                            itemStyle: {
+                                color: 'rgba(255, 159, 64, 1)'
+                            }
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
