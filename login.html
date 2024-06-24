@@ -32,7 +32,7 @@
     <main>
       <section>
         <h1>Login</h1>
-        <form>
+        <form id="loginForm">
           <div class="form-group">
             <label for="username">Email/Username:</label>
             <input type="text" id="username" name="username" required />
@@ -48,5 +48,34 @@
     <footer>
       <p>© 2024 Green Light-Year Organization</p>
     </footer>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+
+          fetch("http://localhost:5000/login", {
+            // Ensure the URL points to your backend
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                alert("Login successful!");
+                // Optionally redirect to another page
+                // window.location.href = 'some_page.html';
+              } else {
+                alert("Login failed: " + data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred. Please try again.");
+            });
+        });
+    </script>
   </body>
 </html>
