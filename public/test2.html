@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>百度与华为CSI三大模块得分对比</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div id="myChart" style="width: 600px;height:400px;"></div>
+    <script>
+        var myChart = echarts.init(document.getElementById('myChart'));
+
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                const baiduData = data.find(item => item.Company === 'Baidu');
+                const huaweiData = data.find(item => item.Company === 'Huawei');
+                
+                const labels = ["Respect Human Rights (out of 10)", "Provide & Promote decent work (out of 6)", "Act Ethically (out of 4)", "CSI Score (0-20)"];
+                const baiduScores = labels.map(label => parseFloat(baiduData[label].toFixed(2)));
+                const huaweiScores = labels.map(label => parseFloat(huaweiData[label].toFixed(2)));
+                
+                // 计算其他公司的平均值
+                const otherData = data.filter(item => item.Company !== 'Baidu' && item.Company !== 'Huawei');
+                const averages = labels.map(label => {
+                    const sum = otherData.reduce((total, item) => total + item[label], 0);
+                    return parseFloat((sum / otherData.length).toFixed(2));
+                });
+
+                var option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['Baidu', 'Huawei', '中国该类指标平均分']
+                    },
+                    grid:{
+                        left: "20%",
+                        bottom: "50%"
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: labels,
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 45
+                        }
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: 'Baidu',
+                        type: 'bar',
+                        data: baiduScores,
+                        emphasis: {
+                            focus: 'self'
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: 'rgba(75, 192, 192, 1)'
+                            }
+                        }
+                    }, {
+                        name: 'Huawei',
+                        type: 'bar',
+                        data: huaweiScores,
+                        emphasis: {
+                            focus: 'self'
+                        },
+                        itemStyle: { 
+                            normal: {
+                                color: 'rgba(153, 102, 255, 1)'
+                            }
+                        }
+                    }, {
+                        name: '中国该类指标平均分',
+                        type: 'line',
+                        data: averages,
+                        label: {
+                            show: true,
+                            position: 'top'
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: 'rgba(255, 159, 64, 1)'
+                            }
+                        }
+                    }]
+                };
+                myChart.setOption(option);
+            });
+    </script>
+</body>
+</html>
+
