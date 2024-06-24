@@ -20,6 +20,7 @@ def get_connection():
     )
     return conn
 
+
 """
 Creates the table 'test_table' in PostgreSQL db;
     it includes the following: id, name, and age.
@@ -38,6 +39,7 @@ def create_table():
     cur.close()
     conn.close()
 
+
 """
 Inserts a new record into the 'test_table' in the PostgreSQL db.
 
@@ -52,6 +54,7 @@ def insert_data(name, age):
     conn.commit()
     cur.close()
     conn.close()
+
 
 """
 Reads and returns all records from the 'test_table' in the PostgreSQL database.
