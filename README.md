@@ -51,7 +51,7 @@ Before you begin, ensure you have met the following requirements:
 
    ```sh
    git clone https://github.com/yourusername/tech4good.git
-   cd tech4good
+   cd tech4good/backend
    ```
 
 2. Create a virtual environment and activate it:
@@ -140,7 +140,7 @@ Before you begin, ensure you have met the following requirements:
 1. Navigate to the frontend directory:
 
    ```sh
-   cd src
+   cd frontend/src
    ```
 
 2. Install the required npm packages:
