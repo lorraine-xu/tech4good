@@ -60,7 +60,7 @@
           event.preventDefault();
           const formData = new FormData(this);
 
-          fetch("http://localhost:5000/register", {
+          fetch("http://localhost:5000/auth/register", {
             // Ensure the URL points to your backend
             method: "POST",
             body: formData,

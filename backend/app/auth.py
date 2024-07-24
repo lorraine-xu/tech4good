@@ -1,15 +1,10 @@
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
+# app/auth.py
+from flask import Blueprint, request, jsonify
 import psycopg2
 from config.db_config import DB_CONFIG
 import logging
 
-app = Flask(__name__)
-# Enable CORS for your frontend
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
-
-logging.basicConfig(level=logging.DEBUG)
-
+auth_bp = Blueprint('auth', __name__)
 
 def get_connection():
     return psycopg2.connect(
@@ -20,8 +15,7 @@ def get_connection():
         password=DB_CONFIG['password']
     )
 
-
-@app.route('/register', methods=['POST'])
+@auth_bp.route('/register', methods=['POST'])
 def register():
     try:
         data = request.form
@@ -57,8 +51,7 @@ def register():
         logging.error(f"Error during registration: {e}")
         return jsonify({'status': 'error', 'message': 'An error occurred. Please try again.'}), 500
 
-
-@app.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login():
     try:
         data = request.form
@@ -86,17 +79,3 @@ def login():
     except Exception as e:
         logging.error(f"Error during login: {e}")
         return jsonify({'status': 'error', 'message': 'An error occurred. Please try again.'}), 500
-
-
-@app.route('/login.html')
-def login_page():
-    return render_template('login.html')
-
-
-@app.route('/register.html')
-def register_page():
-    return render_template('register.html')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
